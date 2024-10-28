@@ -3,18 +3,29 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
+import blogRouter from "./routes/blogs.js";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3737
 
-try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    // testing mongodb connection
-    // mongoose.connection.on('connected', () => console.log(connected));
+// Connecting and testing Mongo DB
+// try {
+//     await mongoose.connect(process.env.MONGODB_URI)
+//     // testing mongodb connection
+//     mongoose.connection.on('connected', () => console.log(connected));
     
-} catch (e) {
-    console.log(e);
+// } catch (e) {
+//     console.log(e);
+    
+// }
+try {
+    await mongoose.connect(process.env.MONGODB_URI)
+    console.log("Connected to mongodb");
+    
+} catch (error) {
+    console.log(error);
+    
     
 }
 
@@ -31,8 +42,12 @@ app.use(cors());
 
 
 app.get("/", (req, res) => {
+    // console.log(req);
+    
     res.send("Anime Lives in This API")
 });
+
+app.use("/blogs", blogRouter);
 
 
 // Error middleware
